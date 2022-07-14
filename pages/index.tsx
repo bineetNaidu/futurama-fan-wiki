@@ -31,10 +31,11 @@ const Home: NextPage = () => {
             data.map((c) => (
               <Link
                 key={c.Name}
-                href="/characters/[id]"
+                rel="preload"
+                href="/characters/[name]"
                 as={`/characters/${c.Name.replaceAll(' ', '-')}`}
               >
-                <div key={c.Name} className="border p-2 group">
+                <div key={c.Name} className="border p-2 group cursor-pointer">
                   <div className="relative">
                     <Image
                       src={c.PicUrl}
