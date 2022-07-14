@@ -11,7 +11,9 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <h1>Character Wiki</h1>
+        <h1 className="text-center text-5xl mt-6 font-bold text-blue-900">
+          Character Wiki
+        </h1>
       </main>
     </>
   );
