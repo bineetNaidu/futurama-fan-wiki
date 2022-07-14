@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useGetCharacter } from '../../services/getCharacter';
 import { useGetQuotesByCharacter } from '../../services/getQuotesByCharacter';
+import { motion } from 'framer-motion';
 
 const CharacterPage: NextPage<{ character: Character }> = () => {
   const router = useRouter();
@@ -14,6 +15,25 @@ const CharacterPage: NextPage<{ character: Character }> = () => {
   const { quotes } = useGetQuotesByCharacter(name?.replaceAll('-', ' '));
 
   const data = character ? character[0] : null;
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
 
   if (error)
     return (
@@ -46,7 +66,7 @@ const CharacterPage: NextPage<{ character: Character }> = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <motion.main variants={container} initial="hidden" animate="visible">
         <Link href="/">
           <a className="text-lg text-gray-800 px-3 py-2 border-2 border-gray-800 border-dashed cursor-pointer">
             Go Back
@@ -56,7 +76,10 @@ const CharacterPage: NextPage<{ character: Character }> = () => {
           {data.Name}&apos; character Wiki
         </h1>
 
-        <main className="w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 my-16 mx-auto">
+        <motion.main
+          variants={item}
+          className="w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 my-16 mx-auto"
+        >
           <div className="flex flex-col items-center">
             <div className="relative w-[300px]">
               <Image
@@ -68,7 +91,7 @@ const CharacterPage: NextPage<{ character: Character }> = () => {
               />
             </div>
 
-            <div className="text-xl">
+            <motion.div variants={item} className="text-xl">
               <h1 className="text-3xl my-4 font-bold">{data.Name}</h1>
               <p>
                 <span className="font-medium">Age: </span>
@@ -102,7 +125,7 @@ const CharacterPage: NextPage<{ character: Character }> = () => {
                 <span className="font-medium">Voiced By: </span>
                 <span>{data.VoicedBy}</span>
               </p>
-            </div>
+            </motion.div>
 
             <div className="my-5">
               <h2 className="text-3xl my-4 font-bold">
@@ -130,8 +153,8 @@ const CharacterPage: NextPage<{ character: Character }> = () => {
               )}
             </div>
           </div>
-        </main>
-      </main>
+        </motion.main>
+      </motion.main>
     </>
   );
 };

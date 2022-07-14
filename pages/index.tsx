@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useGetAllCharacters } from '../services/getAllCharacters';
+import { motion } from 'framer-motion';
 
 const Home: NextPage = () => {
   const { data, error } = useGetAllCharacters();
@@ -13,6 +14,27 @@ const Home: NextPage = () => {
         <p>Error: {error.message}</p>
       </div>
     );
+
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
   return (
     <>
       <Head>
@@ -26,7 +48,12 @@ const Home: NextPage = () => {
           Character Wiki
         </h1>
 
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-8 mx-auto w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 my-16">
+        <motion.div
+          className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-8 mx-auto w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 my-16"
+          variants={container}
+          initial="hidden"
+          animate="visible"
+        >
           {data &&
             data.map((c) => (
               <Link
@@ -35,7 +62,11 @@ const Home: NextPage = () => {
                 href="/characters/[name]"
                 as={`/characters/${c.Name.replaceAll(' ', '-')}`}
               >
-                <div key={c.Name} className="border p-2 group cursor-pointer">
+                <motion.div
+                  key={c.Name}
+                  className="border p-2 group cursor-pointer"
+                  variants={item}
+                >
                   <div className="relative">
                     <Image
                       src={c.PicUrl}
@@ -47,10 +78,10 @@ const Home: NextPage = () => {
                     />
                   </div>
                   <h2 className="text-2xl font-bold text-blue-900">{c.Name}</h2>
-                </div>
+                </motion.div>
               </Link>
             ))}
-        </div>
+        </motion.div>
       </main>
     </>
   );
