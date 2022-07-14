@@ -10,3 +10,9 @@ export type Character = {
   Status: string;
   VoicedBy: string;
 };
+
+export type Quote = {
+  character: string;
+  quote: string;
+  image: string;
+};
